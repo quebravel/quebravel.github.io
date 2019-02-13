@@ -1,0 +1,836 @@
+<!--
+						         -/oyddmdhs+:.
+						     -odNMMMMMMMMNNmhy+-`
+						   -yNMMMMMMMMMMMNNNmmdhy+-
+						 `omMMMMMMMMMMMMNmdmmmmddhhy/`
+						 omMMMMMMMMMMMNhhyyyohmdddhhhdo`
+						.ydMMMMMMMMMMdhs++so/smdddhhhhdm+`
+						 oyhdmNMMMMMMMNdyooydmddddhhhhyhNd.
+						  :oyhhdNNMMMMMMMNNNmmdddhhhhhyymMh
+						    .:+sydNMMMMMNNNmmmdddhhhhhhmMmy
+						       /mMMMMMMNNNmmmdddhhhhhmMNhs:
+						    `oNMMMMMMMNNNmmmddddhhdmMNhs+`
+						  `sNMMMMMMMMNNNmmmdddddmNMmhs/.
+						 /NMMMMMMMMNNNNmmmdddmNMNdso:`
+						+MMMMMMMNNNNNmmmmdmNMNdso/-
+						MNNNNNNNmmmmmNNMmhs+/-`
+						/hMMNNNNNNNNMNdhs++/-`
+						`/ohdmmddhys+++/:.`
+						  `-//////:--.
+-->
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="style.css">
+    <title>
+		Gentoo Instalação base
+	</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<h2>Mostrar a interface da rede </h2>
+
+<table>
+	<tr>
+		<td>
+				 ip -s -c -h a
+		</td>
+	</tr>
+</table>
+
+<h2>
+  Carregar teclado
+</h2>
+
+<table>
+	<tr>
+		<td>
+				     loadkeys br-abnt2
+		</td>
+	</tr>
+</table>
+
+<h2>
+  Configurar rede
+</h2>
+
+<table>
+	<tr>
+		<td>
+				 net-setup nomePlacaRede
+		</td>
+	</tr>
+</table>
+
+<h2>
+  Se for preciso levante a placa de rede com
+</h2>
+
+<table>
+	<tr>
+		<td>
+                  	  ifconfig nomePlacaRede up
+		</td>
+	</tr>
+</table>
+
+<h2>
+  Configurar data MÊS DIA HORA MINUTO ANO com
+</h2>
+
+<table>
+	<tr>
+		<td>
+				 date MMDDHHMMAAAA
+		</td>
+	</tr>
+</table>
+<br>
+
+    <p class="obs"> Formatar HD com parted para EFI</p>
+
+<table>
+	<tr>
+		<td>
+                 parted -a optimal /dev/sda ↵<br>
+                (parted) mklabel gpt ↵<br>
+                (parted) rm 2 ↵<br>
+                (parted) unit mib ↵<br>
+                (parted) mkpart primary 1 513 ↵<br>
+                (parted) name 1 efi_grub ↵<br>
+                (parted) set 1 boot on ↵<br>
+                (parted) print ↵<br>
+                (parted) mkpart primary 514 1026 ↵<br>
+                (parted) name 2 boot ↵<br>
+                (parted) mkpart primary 1027 13315 ↵<br>
+                (parted) name 3 swap ↵ <br>
+                (parted) mkpart primary 13316 -1 ↵<br>
+                (parted) name 4 rootfs ↵<br>
+                (parted) quit ↵ <br><br>
+
+        </td>
+    </tr>
+</table>
+
+<h2>
+  Formatando partições
+</h2>
+
+<table>
+    <tr>
+        <td>
+                 mkfs.vfat -F32 /dev/sda1<br>
+                 mkfs.ext2 /dev/sda2<br>
+
+                 mkfs.ext4 /dev/sda4 <br><br>
+                 Swap<br>
+                 mkswap /dev/sda3<br>
+                 swapon /dev/sda3
+        </td>
+    </tr>
+</table>
+
+<h2>
+  Criando e montando pastas para instação "não coloque a / no final"
+</h2>
+<table>
+    <tr>
+        <td>
+                 mkdir /mnt/gentoo<br>
+                 mount /dev/sda4 /mnt/gentoo<br>
+                 cd /mnt/gentoo<br>
+        </td>
+    </tr>
+</table>
+
+<h2>
+  Verifique se a internet esta funcionado
+</h2>
+
+<table>
+    <tr>
+        <td>
+                ping  -c3 gentoo.org
+        </td>
+    </tr>
+</table>
+
+<h2>
+  Baixando arquivo tar.bz2 para instalação, use o comando<br> links para
+  navegar e achar o aquivo "stage3-amd64-*.tar.bz2"
+</h2>
+
+<table>
+    <tr>
+        <td>
+                links https://www.gentoo.org/downloads/mirrors/#BR <br><br>
+		        releases/ ↵<br>
+                amd64/ ↵<br>
+                autobuilds/ ↵<br>
+                current-stage3-amd64/ ↵<br>
+                stage3-amd64-*.tar.bz2
+        </td>
+    </tr>
+</table>
+
+<h2>
+  Descompactar, use o nome completo
+</h2>
+
+<table>
+	<tr>
+		<td>
+				<p>tar xpf stage3-*.tar.<p1 class="cyan">bz2</p1> --xattrs-include='*.*' --numeric-owner</p>
+				<p>tar xpf stage3-amd64-*.tar.<p1 class="cyan">xz</p1> --xattrs-include='*.*' --numeric-owner</p>
+		</td>
+	</tr>
+</table>
+
+<h2>
+  Montando partições de boot/EFI
+</h2>
+
+<table>
+	<tr>
+		<td>
+				mkdir /mnt/gentoo/<p1 class="cyan">boot</p1> <br>
+				mount /dev/sda2 /mnt/gentoo/<p1 class="cyan">boot</p1> <br> <br>
+
+				mkdir /mnt/gentoo/boot/<p1 class="cyan">efi</p1> <br>
+				mount /dev/sda1 /mnt/gentoo/boot/<p1 class="cyan">efi</p1> <br>
+		</td>
+  </tr>
+</table>
+
+<h2>
+  Verifique/Edite o make.conf para o seu processador.
+</h2>
+
+<table>
+	<tr>
+		<td>
+				grep -c processor /proc/cpuinfo <p1 class="gray">número de núcleos</p1> <br>
+				grep -m1 -A3 "vendor_id" /proc/cpuinfo 
+				<p1 class="gray">modelo do processador <a rel="stylesheet" type="text/css" href="https://wiki.gentoo.org/wiki/Safe_CFLAGS">cflags</a> </p1> <br><br>
+				nano -w <p1 class="cyan">/mnt/gentoo</p1>/etc/portage/make.conf <br>
+		</td>
+	</tr>
+</table>
+
+<p class="obs"> Então adicione ao make.conf.</p>
+<table>
+	<tr>
+		<td>
+             	   <p1 class="yellowtext">CHOST="x86_64-pc-linux-gnu"</p1><br>
+		           <p1 class="yellowtext">COMMON_FLAGS="-march=<p1 class="redtext">native</p1> -O2 -pipe"</p1><br>
+	     		   <p1 class="yellowtext">CFLAGS="${COMMON_FLAGS}"</p1><br>
+		           <p1 class="yellowtext">CXXFLAGS="${COMMON_FLAGS}"</p1><br>
+			   <p1 class="gray">#USE="<p1 class="redtext"></p1>acpi bindist git dbus ffmpeg jpeg jpeg2k -modemmanager mp3 mp4 mpeg png sound opengl X"
+               </p1><br>
+               			EMERGE_DEFAULT_OPTS="<p1 class="cyan">--quiet-build=y --ask --load-average=2 --autounmask-write=y --with-bdeps=y</p1>"<br>
+						FEATURES="<p1 class="cyan">preserve-libs collision-protect candy</p1>"<br>
+	                    <p1 class="gray">#INPUT_DEVICES="evdev keyboard synaptics mouse</p1>"<br>
+	                    <p1 class="gray">#VIDEO_CARDS="vesa intel amdgpu nvidia virtualbox</p1>"<br>
+			    		LINGUAS="<p1 class="cyan">pt_BR.UTF-8 pt_BR.ISO-8859-1 pt_BR pt-BR</p1>"<br>
+		            	MAKEOPTS="<p1 class="cyan">-j4</p1>" <br>
+
+			    		ACCEPT_LICENSE="<p1 class="cyan">*</p1>" <br>
+		            	L10N="<p1 class="cyan">pt-BR</p1>"<br>
+		            	GRUB_PLATFORMS="<p1 class="cyan">efi-64</p1>"
+          </td>
+	      </tr>
+</table>
+
+<table border="0" bgcolor="darkgray" width="70%">
+<br>
+
+    <p class="obs">
+      Observação: Editar make.conf para funcionar com UEFI. Adicione a linha:
+    <p>
+ 	     <tr>
+				<td>
+							GRUB_PLATFORMS="<p1 class="cyan">efi-64</p1>"
+				</td>
+	     </tr>
+</table>
+
+<h2>
+  Montando pastas de instalação e configuração "não coloque / <br>no final.
+</h2>
+
+<table>
+	<tr>
+		<td>
+				mount --types proc /proc /mnt/gentoo/proc  <br>
+				mount --rbind /sys /mnt/gentoo/sys <br>
+				mount --rbind /dev /mnt/gentoo/dev <br><br>
+				test -L /dev/shm && rm /dev/shm && mkdir /dev/shm <br>
+				mount --types tmpfs --options nosuid,nodev,noexec shm /dev/shm <br>
+				chmod 1777 /dev/shm <br>
+		</td>
+  </tr>
+</table>
+
+<h2>
+  Copie as informações de DNS
+</h2>
+
+<table>
+	<tr>
+		<td>
+				cp -L /etc/resolv.conf /mnt/gentoo/etc/
+		</td>
+	</tr>
+</table>
+
+<h2>Entrando no novo ambiente</h2>
+
+<table>
+	<tr>
+		<td>
+				chroot /mnt/gentoo /bin/bash <br>
+				source /etc/profile <p1 class="cyan">&&</p1>
+                export PS1="(chroot) $PS1"
+				&emsp;<p1 class="cyan"><p>livecd ~ #&emsp;</p1>
+		</td>
+	</tr>
+</table>
+
+<h2>
+  Instalando um instantâneo do repositório ebuild da web
+</h2>
+
+<table>
+	<tr>
+		<td>
+		      emerge-<p1 class="cyan">webrsync</p1><br>
+		      emerge <p1 class="cyan">--sync --quiet</p1><br>
+		</td>
+	</tr>
+</table>
+
+<h2>
+  Escolhendo o perfil correto/de sua escolha
+</h2>
+
+<table>
+	<tr>
+		<td>
+				eselect profile list
+		</td>
+	</tr>
+</table>
+
+<h2>
+  Escolha o perfil com o comando... "substitua o X pelo número <br>de sua escolha.
+</h2>
+
+<table>
+	<tr>
+		<td>
+				eselect profile set "X"<br>
+				<p class="cyan">&emsp;&emsp;&emsp;&emsp; default/linux/amd64/17.0/desktop</p>
+		</td>
+	</tr>
+</table>
+
+<h2>
+  Use eselect para verificar
+</h2>
+
+<table>
+	<tr>
+		<td>
+				eselect profile list
+		</td>
+	</tr>
+</table>
+
+<h2>Atualize</h2>
+
+<table>
+	<tr>
+		<td class="cyan">
+			emerge --ask --update --deep --newuse @world
+		</td>
+	</tr>
+
+</table>
+
+
+<h2>
+	Fuso horário.
+</h2>
+
+<table>
+	<tr>
+		<td>
+				echo "America/Belem" > /etc/timezone <br>
+				emerge --config sys-libs/timezone-data <br>
+				vim /etc/locale.gen <br>
+				<p class="cyan">&emsp;&emsp;&emsp;&emsp; pt_BR.UTF-8 UTF-8 <br>
+				                &emsp;&emsp;&emsp;&emsp; #pt_BR ISO-8859-1 </p><br>
+				locale-gen <br>
+				locale -a <br>
+				eselect locale list <br>
+				eselect locale set <p1 class="cyan">[pt_br.utf8]</p1> <br>
+				vim /etc/env.d/02locale <br>
+				<p class="cyan">&emsp;&emsp;&emsp;&emsp; LANG="pt_BR.UTF-8" <br>
+								&emsp;&emsp;&emsp;&emsp; LC_COLLATE="C"</p>
+		</td>
+	</tr>
+</table>
+
+<h2>
+	Carregando o ambiente.
+</h2>
+
+<table>
+	<tr>
+		<td>
+                    env-update <p1 class="cyan">&&</p1>
+                    source /etc/profile <p1 class="cyan">&&</p1>
+                    export PS1="(chroot) $PS1"
+		</td>
+	</tr>
+</table>
+<br>
+<table>
+	<tr>
+		<td>
+		      emerge -auDN @world
+		</td>
+	</tr>
+</table>
+
+<h2>
+  CPU flags.
+</h2>
+
+<table>
+	<tr>
+		<td>
+					emerge app-portage/cpuid2cpuflags <br>
+					cpuid2cpuflags-x86 <br>
+					cpuid2cpuflags-x86 <p1 class="cyan"> >> </p1> /etc/portage/make.conf<br> <br>
+
+					<p1 class="gray"> Apague o primero CPU_FLAGS_X86 da linha do make.conf <br>
+					modifique colocando entre aspas =""</p1> <br> <br>
+
+					vim /etc/portage/make.conf<br><br>
+                    env-update <p1 class="cyan">&&</p1>
+                    source /etc/profile <p1 class="cyan">&&</p1>
+                    export PS1="(chroot) $PS1"<br>
+		</td>
+	</tr>
+</table>
+
+<table>
+	<h2>Instalando pacotes para o kernel.</h2>
+	<thead>
+		<tr>
+			<th>gentoo kernel</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>emerge -aq gentoo-sources genkernel usbutils dosfstools pciutils gentoolkit ufed eix axel xfsprogs</td>
+		</tr>
+	</tbody>
+</table>
+
+<table>
+	<h2>Configurando o genkernel</h2>
+	<thead>
+		<tr>
+			<td>vim /etc/genkernel.conf</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<p>	&emsp;&emsp;&emsp;MENUCONFIG="<p1 class="cyan">yes</p1>" <br>
+					&emsp;&emsp;&emsp;CLEAN="<p1 class="cyan">no</p1>" <br>
+					&emsp;&emsp;&emsp;MRPROPER="<p1 class="cyan">no</p1>" <br> <br>
+					<p1 class="gray">descomente:</p1> <br>
+					<p1 class="cyan">&emsp;&emsp;&emsp;MAKEOPTS="$(portageq envvar MAKEOPTS)" <br>
+					&emsp;&emsp;&emsp;TMPDIR="/var/tmp/genkernel"</p1>
+				</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+<h2>Configurando o fstab.</h2>
+
+
+<table>
+	<tr>
+		<td>
+				vim /etc/fstab
+		</td>
+	</tr>
+</table>
+<br>
+
+<table id = "fstab">
+	<tr id = "fstab"><td id = "fstab">/dev/sda1</td> <td id = "fstab">/boot/efi</td> <td id = "fstab">vfat</td> <td id = "fstab">noauto,noatime</td> <td id = "fstab">0 2</td> </tr>
+	<tr id = "fstab"><td id = "fstab">/dev/sda2</td> <td id = "fstab">/boot</td> <td id = "fstab">ext2</td> <td id = "fstab">defaults</td> <td id = "fstab">0 2</td> </tr>
+
+   <tr id = "fstab"><td id = "fstab">/dev/sda3</td> <td id = "fstab">none</td> <td id = "fstab">swap</td> <td id = "fstab">sw</td> <td id = "fstab">0 0</td> </tr>
+   <tr id = "fstab"><td id = "fstab">/dev/sda4</td> <td id = "fstab">/</td> <td id = "fstab">ext4</td> <td id = "fstab">noatime</td> <td id = "fstab">0 1</td> </tr>
+   <tr id = "fstab"><td id = "fstab">/dev/cdrom</td> <td id = "fstab">/mnt/cdrom</td> <td id = "fstab">auto</td> <td id = "fstab">noauto,ro</td> <td id = "fstab">0 0</td> </tr>
+
+   <!-- <tr id = "fstab"><td id = "fstab">tmpfs</td> <td id = "fstab">/tmp</td> <td id = "fstab">tmpfs</td> <td id = "fstab">size=6G,noatime</td> <td id = "fstab">0 0</td> </tr> -->
+
+   <tr id = "fstab"><td id = "fstab">tmpfs</td> <td id = "fstab">/var/tmp</td> <td id = "fstab">tmpfs</td> <td id = "fstab">rw,nosuid,noatime,nodev,size=4G,mode=1777</td> <td id = "fstab">0 0</td> </tr>
+   <tr id = "fstab"><td id = "fstab">tmpfs</td> <td id = "fstab">/var/tmp/portage</td> <td id = "fstab">tmpfs</td> <td id = "fstab">rw,nosuid,noatime,nodev,size=4G,mode=775,uid=portage,gid=portage,x-mount.mkdir=775</td> <td id = "fstab">0 0</td> </tr>
+</table>
+
+
+<h2>
+  Verifique/Edite o make.conf para o seu processador.
+</h2>
+
+<table>
+	<tr>
+		<td>
+			vim /etc/portage/make.conf
+		</td>
+	</tr>
+</table>
+
+<h2>
+  Instalando o kernel.
+</h2>
+
+<table>
+	<tr>
+		<td>
+				genkernel all
+		</td>
+	</tr>
+</table>
+
+
+  <h2>Configurar e construir o kernel
+    automaticamente.</h2>
+
+
+<table>
+<tr>
+<td>
+
+<code>
+--------------------------------------------------------------------------------------<br>
+video card nvidea<br>
+Pre-allocated buffer size for HD audio drive = 2048<br>
+Virtualization drivers<br>
+DOS/FAT/NT Filessystems ---> * NTFS write support<br><br>
+
+
+Device Drivers ---><br>
+&ensp;  Generic Driver Options ---><br>
+&ensp;&ensp;    [*] Maintain a devtmpfs filesystem to mount at /dev<br>
+&ensp;&ensp;    [ ] &ensp;&ensp;  Automount devtmpfs at /dev, after the kernel mounted the rootfs<br><br>
+
+Verify SCSI disk support has been activated (CONFIG_BLK_DEV_SD):<br>
+KERNEL Enabling SCSI disk support<br><br>
+
+Device Drivers ---><br>
+&ensp;   SCSI device support  ---><br>
+&ensp;&ensp;      <*> SCSI disk support<br><br>
+
+
+File systems ---><br>
+&ensp;  <*> Second extended fs support<br>
+&ensp;  <*> The Extended 3 (ext3) filesystem<br>
+&ensp;  <*> The Extended 4 (ext4) filesystem<br>
+&ensp;  <*> Reiserfs support<br>
+&ensp;  <*> JFS filesystem support<br>
+&ensp;  <*> XFS filesystem support<br>
+&ensp;  <*> Btrfs filesystem support<br>
+&ensp;  DOS/FAT/NT Filesystems  ---><br>
+&ensp;&ensp;&ensp;&ensp;    <*> MSDOS fs support<br>
+&ensp;&ensp;&ensp;&ensp;    <*> VFAT (Windows-95) fs support<br><br>
+ 
+Pseudo Filesystems ---><br>
+&ensp;&ensp;    [*] /proc file system support<br>
+&ensp;&ensp;    [*] Tmpfs virtual memory file system support (former shm fs)<br><br>
+
+
+Device Drivers ---><br>
+&ensp;  Network device support ---><br>
+&ensp;&ensp;    <*> PPP (point-to-point protocol) support<br>
+&ensp;&ensp;    <*> &ensp;&ensp;  PPP support for async serial ports<br>
+&ensp;&ensp;    <*> &ensp;&ensp;  PPP support for sync tty ports<br><br>
+
+
+Processor type and features  ---><br>
+&ensp;  [*] Symmetric multi-processing support<br><br>
+
+
+Device Drivers ---><br>
+&ensp;  HID support  ---><br>
+&ensp;&ensp;    -*- HID bus support<br>
+&ensp;&ensp;    <*>   Generic HID driver<br>
+&ensp;&ensp;    [*]   Battery level reporting for HID devices<br>
+&ensp;&ensp;&ensp;      USB HID support  ---><br>
+&ensp;&ensp;&ensp;        <*> USB HID transport layer<br>
+&ensp;  [*] USB support  ---><br>
+&ensp;&ensp;    <*>&ensp;&ensp;     xHCI HCD (USB 3.0) support<br>
+&ensp;&ensp;    <*>&ensp;&ensp;     EHCI HCD (USB 2.0) support<br>
+&ensp;&ensp;    <*>&ensp;&ensp;     OHCI HCD (USB 1.1) support<br><br>
+
+
+Architecture specific kernel configuration<br><br>
+
+
+Processor type and features  ---><br>
+&ensp;   [ ] Machine Check / overheating reporting <br>
+&ensp;   [ ] &ensp;&ensp;Intel MCE Features<br>
+&ensp;   [ ] &ensp;&ensp;AMD MCE Features<br>
+&ensp;   Processor family (AMD-Opteron/Athlon64)  ---><br>
+&ensp;&ensp;      ( ) Opteron/Athlon64/Hammer/K8<br>
+&ensp;&ensp;      ( ) Intel P4 / older Netburst based Xeon<br>
+&ensp;&ensp;      ( ) Core 2/newer Xeon<br>
+&ensp;&ensp;      ( ) Intel Atom<br>
+&ensp;&ensp;      ( ) Generic-x86-64<br>
+Executable file formats / Emulations  ---><br>
+&ensp;   [*] IA32 Emulation<br><br>
+
+Enable GPT partition <br><br>
+
+-*- Enable the block layer ---><br>
+&ensp;   Partition Types ---><br>
+&ensp;&ensp;      [*] Advanced partition selection<br>
+&ensp;&ensp;      [*] EFI GUID Partition support<br><br>
+
+Enable EFI stub support and EFI variables in the Linux kernel if UEFI is used to boot the system (CONFIG_EFI, CONFIG_EFI_STUB, CONFIG_EFI_MIXED, and CONFIG_EFI_VARS):<br>
+KERNEL Enable support for UEFI<br><br>
+
+Processor type and features  ---><br>
+&ensp;&ensp;    [*] EFI runtime service support <br>
+&ensp;&ensp;    [*] &ensp;  EFI stub support<br>
+&ensp;&ensp;    [*] &ensp;&ensp;&ensp;    EFI mixed-mode support<br><br>
+ 
+Firmware Drivers  ---><br>
+&ensp;&ensp;    EFI (Extensible Firmware Interface) Support  ---><br>
+&ensp;&ensp;&ensp;&ensp;        <*> EFI Variable Support via sysfs<br>
+------------------------------------------------------------------------------------
+</code>
+</td>
+</tr>
+</table><br>
+
+<table>
+	<h2>Se estiver instalando em um ssd</h2>
+	<thead>
+		<tr>
+			<th>SSD</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+            <td>
+                <p>vim /etc/profile.d/xdg_cache_home</p>
+                <p>&emsp;&emsp;&emsp;<p1 class="cyan">export</p1> XDG_CACHE_HOME="/tmp/${USER}/.cache"</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>Instalando firmware</h2>
+
+<table>
+    <tr>
+		<td>
+                emerge --ask sys-kernel/linux-firmware
+        </td>
+	</tr>
+</table>
+
+<h2>Informação de host e domínio</h2>
+
+<table>
+	<tr>
+		<td>
+                vim /etc/conf.d/hostname<br>
+<table>
+	<tr>
+		<td>
+		    <p>&emsp;&emsp;&emsp;hostname="<p1 class="cyan">gentoo</p1>"</p>
+        	</td>
+	</tr>
+</table>
+		</p1>
+        </td>
+	</tr>
+</table>
+
+<h2>Configurando a rede<br>
+	Primeiro instale o pacote net-misc/netifrc</h2>
+
+<table>
+	<tr>
+		<td>
+                emerge --ask --noreplace net-misc/netifrc
+        </td>
+	</tr>
+</table>
+
+<p class="obs"> Iniciando automaticamente a rede durante o boot
+
+ precisam ser criados assim como fizemos com o
+net.eth0.<br>
+
+Se após a inicialização do sistema descobrirmos que o nome que usamos para a interface de rede (que está atualmente documentada
+como eth0) está errado, então execute os seguintes passos para corrigir isso:<br>
+
+1.Corrija o arquivo /etc/conf.d/net com o nome correto da interface de rede (tal como enp0s3 em vez de eth0).<br>
+2.Crie um novo link simbólico (como /etc/init.d/net.enp0s3).<br>
+3.Remova o link simbólico antigo (rm /etc/init.d/net.eth0).<br>
+4.Adicione o novo ao runlevel default.<br>
+5.Remova o antigo usando rc-update del net.eth0 default.</p>
+
+<table>
+	<tr>
+		<td>
+                cd /etc/init.d<br>
+				ln -s net.lo net.<p1 class="cyan">enp0s3</p1><br>
+				rc-update add net.<p1 class="cyan">enp0s3</p1> default <br>
+				cd /
+        </td>
+	</tr>
+</table>
+
+<h2>O arquivo hosts</h2>
+<h3>Adicione um nome depois de localhost</h3><br>
+<table>
+
+    <tr>
+	   <td>
+                vim /etc/hosts<br>
+                <p1>
+							&emsp;&emsp;&emsp;127.0.0.1 <p1 class="cyan">gentoo.homenetwork</p1> localhost
+				</p1>
+		</td>
+	</tr>
+</table>
+
+<h2>Adicionando senha para o root</h2>
+
+<table>
+	<tr>
+		<td>
+                passwd
+        </td>
+	</tr>
+</table>
+
+<h2>Teclado</h2>
+
+<table>
+	<tr>
+		<td>
+		      vim /etc/conf.d/keymaps<br>
+            		<p>
+              &emsp;&emsp;&emsp;keymap="<p1 class=cyan>br-abnt2</p1>"
+		      	   </p>
+		</td>
+	</tr>
+</table>
+
+<h2>Hora local.</h2>
+
+<table>
+	<tr>
+		<td>
+		      vim /etc/conf.d/hwclock<br>
+            		<p>
+              &emsp;&emsp;&emsp;clock="<p1 class=cyan>local</p1>"
+		      	   </p>
+		</td>
+	</tr>
+</table>
+
+<h2>Sistema de log</h2>
+
+<table>
+	<tr>
+		<td>
+			    emerge -aq sysklogd cronie mlocate logrotate dhcpcd <br>
+
+                rc-update add <p1 class="cyan">sysklogd</p1> default<br>
+                rc-update add <p1 class="cyan">sshd</p1> default<br>
+                rc-update add <p1 class="cyan">cronie</p1> default<br>
+                rc-update add <p1 class="cyan">dhcpcd</p1> default
+        </td>
+	</tr>
+</table>
+
+<h2>Selecionando/Instalando um gerenciador de boot: GRUB2.</h2>
+<p class="obs"> Obs: Cuidado no "grub.cfg" pois ao aperta tab ele altomaticamente coloca "grub.conf".</p>
+
+<table>
+    <tr>
+		<td>
+
+				<p1 class="yellowtext">Modo BIOS</p1><br>emerge --ask sys-boot/grub<br>
+				grub-install /dev/sda<br>
+				grub-mkconfig -o /boot/grub/grub.cfg
+
+        </td>
+     </tr>
+</table>
+
+<h2>Verifique se a partição do EFI/boot esta criada/montada</h2>
+
+<table>
+    <tr>
+        <td>
+                <p1 class="yellowtext">Modo UEFI</p1><br>
+                mkdir /boot/efi <p1 class="gray">Verifique antes</p1> <br>
+                mount /dev/sda1 /boot/efi <p1 class="gray">Verifique antes</p1> <br><br>
+                mount -o remount,rw <p1 class="cyan">/boot/efi</p1> <br><br>
+                echo 'sys-boot/grub:2 mount truetype' >> /etc/portage/package.use/grub:2<br><br>
+                emerge --ask --update --newuse --deep --verbose sys-boot/grub:2<br><br>
+                mount -o remount,rw /sys/firmware/efi/efivars<br><br>
+                grub-install --target=x86_64-efi --efi-directory=<p1 class="cyan">/boot/efi</p1> --removable<br><br>
+                grub-mkconfig -o /boot/grub/<p1 class="cyan">grub.cfg</p1><br>
+        </td>
+	</tr>
+</table>
+
+<h2>Adicionando um usuário e senha</h2>
+
+<table>
+	<tr>
+		<td>
+            useradd -m -G users,wheel,audio,video,root,sys,disk,adm,bin,daemon,portage,<br>console,usb,games,cron,input,lp,uucp -s /bin/bash <p1 class="cyan">nomeUsuario</p1><br>
+				</p>passwd <p1 class="cyan">nomeUsuario</p1>
+        </td>
+	</tr>
+</table>
+
+<h2>Saindo do sistema</h2>
+
+<table>
+	<tr>
+		<td>
+				exit<br>
+				cd<br>
+				cdimage ~# umount -l /mnt/gentoo/dev{/shm,/pts,} <br>
+				cdimage ~# umount -R /mnt/gentoo <br>
+				cdimage ~# shutdown -r now <br>
+        </td>
+	</tr>
+</table>
+
+
+
+</body>
+</html>
