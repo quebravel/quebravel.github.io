@@ -1,0 +1,616 @@
+<!--
+
+					                   -`
+					                  .o+`                 
+					                 `ooo/                
+					                `+oooo:               
+					               `+oooooo:              
+					               -+oooooo+:             
+					             `/:-:++oooo+:            
+					            `/++++/+++++++:           
+					           `/++++++++++++++:          
+					          `/+++ooooooooooooo/`        
+					         ./ooosssso++osssssso+`       
+					        .oossssso-````/ossssss+`      
+					       -osssssso.      :ssssssso.     
+					      :osssssss/        osssso+++.    
+					     /ossssssss/        +ssssooo/-    
+					   `/ossssso+/:-        -:/+osssso+-  
+					  `+sso+:-`                 `.-/+oso: 
+					 `++:.                           `-/+/
+					 .`                                 `/
+
+
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title="arch_instacao">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+    .redtext {
+            color: red;
+    }
+    .bluetext {
+            color: blue;
+    }
+    .greentext {
+            color: green;
+    }
+    .whitetext {
+    	    color: white;
+    }
+    .lawngreen {
+    	    color: LawnGreen;
+    }
+    .yellowtext {
+    	    color: yellow;
+    }
+    .orangetext {
+	color: orange;
+    }
+    body {
+  font-family: Arial, Helvetica, sans-serif;
+    }
+
+.myTableStyle
+    {
+        position: fixed;
+        bottom: 50%;
+        right: 50%;
+    }
+
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family:'DejaVu sans mono', 'Arial Narrow', Arial, sans-serif;
+    font-size: medium;
+    border: 0;
+    background-color: black;
+    width: 100%;
+    text-align: left;
+    color: white;
+}
+ 
+table, td {
+    /*border: 1px solid black;*/
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    padding: 5px;
+}
+
+h2 {
+    font-family:'DejaVu sans mono', 'Arial Narrow', Arial, sans-serif;
+    color: azure;
+}
+
+h3 {
+    font-family:'DejaVu sans mono', 'Arial Narrow', Arial, sans-serif;
+    color: azure;
+}
+
+code {
+    color:gainsboro
+}
+
+body {
+    background-color: blue;
+}
+
+header {
+  background-color: #666;
+  padding: 30px;
+  text-align: center;
+  font-size: 35px;
+  color: white;
+}
+
+/* Style the footer */
+footer {
+  background-color: #aaa;
+  padding: 10px;
+  text-align: center;
+  color: white;
+}
+
+</style>
+  
+</head>
+    <title>Arch Instalação</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <body>
+ 
+<header>
+    <h1>GUIA RAPIDO<br>instalar arch</h1>
+</header>
+<footer>
+    <h1>UEFI</h1>
+</footer>
+<!-- 1 -->    
+    <h2>1. Carregando teclado.</h2>
+
+    <table>
+
+    	<tr>
+    		<td><h3 style="color: white;"># loadkeys br-abnt2</h3></td>
+    	</tr>
+    </table>
+
+<!-- 2 -->
+	<h2 style="color: white;">2. Verificar o modo de inicialização com o comando.</h2>
+	<table>
+
+    	<tr>
+    		<td><h3># ls /sys/firmware/efi/efivars</h3></td>
+    	</tr>
+    </table>
+	
+<br>
+	<h2><code>Se o diretório não existir, o sistema</code><br> 
+	<code>vai ser inicializado no modo BIOS.</code></h2>
+
+<!-- 3 -->	
+	<h2>3. Parcionando disco GPT em UEFI.</h2>
+	<h3>Usando a UEFI.</h3>
+	<table>
+
+    	<tr>
+    		<td>
+                <h3>
+                    # gdisk /dev/sda<br>
+                    <p1 class="yellowtext">Criar uma nova tabela de partição vazia </p1><br>			
+                    Command: o ↵<br>
+                    This option deletes all partitions and creates a new protective MBR.<br>
+                    Proceed? (Y/N): y ↵<br><br>
+                    <p1 class="yellowtext">Criar Partição 1 (boot):</p1>
+                    Command: n ↵<br>
+                    Partition Number: 1 ↵<br>
+                    First sector: ↵<br>
+                    Last sector: +500M ↵<br>
+                    Hex Code: ef00 ↵ <font color="yellow">(para UEFI)</font><br><br>
+                    <p1 class="yellowtext">Criar Partição 2 (swap):</p1><br>
+                    Command: n ↵<br>
+                    Partition Number: 2 ↵<br>
+                    First sector: ↵<br>
+                    Last sector: +4G ↵<br>
+                    Hex Code: 8200 ↵<br><br>
+                    <p1 class="yellowtext">Criar Partição 3 (root):</p1><br>
+                    Command: n ↵<br>
+                    Partition Number: 3 ↵<br>
+                    First sector: ↵<br>
+                    Last sector: ↵ (for rest of disk)<br>
+                    Hex Code: ↵<br><br>
+                    <p1 class="yellowtext">Gravar a Tabela de Partição no Disco:</p1><br>
+                    Command: p ↵<br>
+                    Command: w ↵<br>
+                    Do you want to proceed? (Y/N): Y ↵<br><br>
+                </h3>
+            </td>
+    	</tr>
+    </table>
+
+	<!-- 4 -->	
+    <h2>4. formatando disco.</h2>
+
+ 
+    <h2 style="color: yellow;">Se for <sup>UEFI</sup> use no boot </h2>
+ 
+    <table>
+
+    	<tr>
+    		<td>
+ 
+ 
+    <h3># mkfs.fat -F32 -n BOOT /dev/sda1</h3>
+            </td>
+        </tr>
+</table>
+<br>
+    <table>
+
+    	<tr>
+    		<td>
+                <h3 style="color:white;">
+                                     # mkfs.ext4 /dev/sda3<br>
+                                     # mkswap /dev/sda2<br>
+                                     # swapon /dev/sda2<br>
+                                     
+                </h3>
+            </td>
+    	</tr>
+    </table>
+<!-- 5 -->
+    <h2>5. Verificando internet.</h2>
+
+    <table>
+
+    	<tr>
+    		<td>
+                <h3>
+                    # ip -s -c -h a<br>
+                    # wifi-menu <p1 style="color: yellow;">+(nome do dispositivo encontrado pelo comando acima)</p1>
+                </h3>
+            </td>
+    	</tr>
+    </table>
+<!-- 6 -->
+    <h2>6. Montando.</h2>
+
+    <table>
+
+    	<tr>
+    		<td>
+                <h3># mkdir /mnt/boot<br>
+                    # mount /dev/sda1 /mnt/boot<br>
+                    # mount /dev/sda3 /mnt
+                </h3>
+            </td>
+    	</tr>
+    </table>
+
+<!-- 7 -->
+	<h2>7. Baixando base Arch Linux.</h2>
+    <table>
+    	<tr>
+    		<td>
+                <h3>
+                    # pacstrap -K /mnt base base-devel linux linux-firmware dhcpcd
+                </h3>
+            </td>
+    	</tr>
+    </table>
+<!-- 8 -->
+    <h2>8. Gerando fstab.</h2>
+    <table>
+    	<tr>
+    		<td>
+                <h3>
+                    # genfstab -U /mnt >> /mnt/etc/fstab<br>
+                    # cat /mnt/etc/fstab
+                </h3>
+            </td>
+    	</tr>
+    </table>
+
+<!-- 9 -->
+    <h2>9. Entrando no chroot.</h2>
+    <table>
+    	<tr>
+    		<td>
+                <h3>
+                    # arch-chroot /mnt
+                </h3>
+            </td>
+    	</tr>
+    </table>
+<!-- 10 -->
+<h2>10. Acertando horário.</h2>
+<table>
+    <tr>
+        <td>
+            <h3>
+                # rm /etc/localtime<br>
+                # ln -s /usr/share/zoneinfo/America/Belem /etc/localtime<br>
+                # hwclock --systohc<br>
+                # date
+            </h3>
+        </td>
+    </tr>
+</table>
+<!-- 11 -->
+    <h2>11. Alterando idioma.</h2>
+    <table>
+    	<tr>
+    		<td>
+                <h3># nano /etc/locale.gen<br>
+                    <p1 class="yellowtext">Descomente a linha pt_BR.UTF-8 UTF-8</p1><br>
+                    # locale-gen<br>
+                    # echo LANG=pt_BR.UTF-8 > /etc/locale.conf<br>
+                    # export LANG=pt_BR.UTF-8
+                </h3>
+            </td>
+    	</tr>
+    </table>
+<!-- 12 -->
+    <h2>12. Nomeando a maquina.</h2>
+    <table>
+    	<tr>
+    		<td>
+                <h3>
+                    # echo <font color="ffcc00">nomeEscolhido</font> > /etc/hostname<br>
+                    # cat /etc/hostname
+                </h3>
+            </td>               
+    	</tr>
+    </table>
+<!-- 13 -->
+    <h2>13. Instalando pacotes necessário para o funionamento do wifi.</h2>
+    <table>
+    	<tr>
+    		<td>
+                <h3>
+                    # pacman -S <code>wireless_tools</code> wpa_supplicant <code>wpa_actiond</code> dialog
+                </h3>
+            </td>
+    	</tr>
+    </table>
+
+<!-- 14 -->
+    <h2>14. Adicionando senha do root.</h2>
+    <table>
+    	<tr>
+    		<td>
+                <h3>
+                    # passwd
+                </h3>
+            </td>
+    	</tr>
+    </table>
+
+<!-- 15 -->
+<h2>15. Configurando teclado terminal.</h2>
+    <table>
+        <tr>
+            <td>
+                <h3>
+                    # nano /etc/vconsole.conf<br>
+                    <font color="ffff00">KEYMAP=br-abnt2</font>
+                </h3>
+            </td>
+        </tr>
+    </table>
+<!-- 16 -->
+    <h2>16. Atualizando o sistema.</h2>
+    <table>
+    	<tr>
+    		<td>
+                <h3>
+                    # pacman -Sy
+                </h3>
+            </td>
+    	</tr>
+    </table>
+<!-- 17 -->
+	<h2>17. Instalando o grub <p1 style="color: aqua;"><sup>(modo UEFI)</sup></p1>.</h2>
+    <table>
+    	<tr>
+    		<td>
+                <h3># pacman -S grub-efi-x86_64 efibootmgr<br>
+        	        <font color="#767676"># mkdir /mnt/boot<br>
+                    # mount /dev/sda1 /mnt/boot</font><br>
+                    # grub-install --target=x86_64-efi --efi-directory=<font color="#767676">/mnt</font>/boot --bootloader-id=BOOT --recheck<br>
+		            # grub-mkconfig -o /boot/grub/grub.cfg
+                </h3>
+            </td>
+    	</tr>
+    </table>
+<!-- 18 -->	
+    <h2>18. Criando usuário.</h2>
+    <table>
+        <tr>
+    		<td>
+                <h3>
+                    # useradd -m -G users,wheel,audio,video,dbus,network,\<br>
+                    rfkill,power,storage,lp -s /bin/bash <font color="ffcc00">nomeUsuario</font><br><br>
+                    # passwd <font color="ffcc00">nomeUsuario</font>
+                </h3>
+            </td>
+    	</tr>
+    </table>
+<!-- 19 -->
+    <h2>19. Instalando pacotes essenciais.</h2>
+
+    <table>
+    	<tr>
+		    <td>
+                <h3>
+                    # pacman -S acpi acpid <p1 class="yellowtext">(para notebook bateria)</p1><br>
+                    networkmanager network-manager-applet-gtk2<br>
+                    alsa-plugins alsa-utils pulseaudio-alsa<br>
+	                gst-plugins-{base,good,bad,ugly} gst-libav<br>
+	                xterm xfce4-terminal<br>
+                    firefox firefox-i18n-pt-br<br>
+                    git wget sudo<br>
+                    <p1 style="color: yellow;">OBS 1: Se não tem wifi use o comando dhcpcd + nome do dispisitivo (Ex: wlp3s0).</p1><br>
+                    <p1 style="color:aqua;">OBS 2: acpi e acpid são para a batéria do notebook.</p1>
+                </h3>
+            </td>
+    	</tr>
+    </table>
+<!-- 20 -->
+    <h2>20. Dando permissão ao usuário</h2>
+
+    <table>
+    	<tr>
+    		<td>
+                <h3>
+                # nano /etc/sudoers<br>
+                <p1 class="yellowtext">abaixo da linha root ALL=(ALL) ALL adicione</p1><br>
+                nomeUsuario <code>ALL=(ALL) ALL</code>
+                </h3>
+            </td>
+    	</tr>
+    </table>
+<!-- 21 -->
+    <h2>21. Saindo</h2>
+
+    <table>
+    	<tr>
+    		<td>
+                <h3>
+                    # exit<br>
+                    # umount -R /mnt<br> 
+                    # reboot
+                </h3>
+            </td>
+    	</tr>
+    </table>
+
+<!-- 01 -->   
+    <h2 style="color:yellow;">01. Iniciando a internet depois do boot.</h2>
+
+    <table>
+    	<tr>
+    		<td>
+                <h3>$ sudo systemctl start dhcpcd@<o style="color: aqua;">eth0</o>.service<br>
+                    $ sudo systemctl enable dhcpcd@<o style="color: aqua;">eth0</o>.service<br>
+                    <!-- $ sudo systemctl start NetworkManager<br>
+                    $ sudo systemctl enable NetworkManager<br> -->
+                    <p1 style="color: yellow;">troque <o style="color: aqua;">eth0</o> pelo seu dispositivo.</p1>
+                </td>
+    	</tr>
+    </table>
+<!-- 02 -->
+<h2 style="color:yellow;">02. Atualizando mirror list.</h2>
+    <table>
+    	<tr>
+    		<td>
+                <h3>
+                    $ sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup<br><br>
+                    $ sudo sed -i 's/^#Server/Server/' /etc/pacman.d/mirrorlist.backup<br><br>
+                    $ sudo rankmirrors -n 6 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist
+                </h3>
+            </td>
+    	</tr>
+    </table>
+
+<!-- 03 -->
+<h2 style="color:yellow;">03. Instalando Xorg.</h2>
+    <table>
+    	<tr>
+    		<td>
+                <h3># pacman -S xorg-xinit xorg-server ttf-dejavu<br>
+                <p1 style="color: red;">Radeon </p1>extra/xf86-video-amdgpu<br>
+                <p1 style="color: aqua;">Intel </p1>extra/xf86-video-intel<br>
+                <p1 style="color: greenyellow;">Nvidia </p1>extra/nvidia<br><br>
+                <p1 style="color: yellow;">Teclado </p1>extra/xf86-input-keyboard<br>
+                <p1 style="color: yellow;">Mouse </p1>extra/xf86-input-mouse<br>
+                <p1 style="color: yellow;">touchpads (Notebooks) </p1>extra/xf86-input-synaptics
+                </h3>
+            </td>
+    	</tr>
+    </table>
+<!-- 04 -->
+<h2 style="color:yellow;">04. Configurando teclado Xorg.</h2>
+    <table>
+        <tr>
+            <td>
+                <h3># nano /etc/X11/xorg.conf.d/00-keyboard.conf<br><br>
+                    <p1 style="color: yellow;">Section "InputClass"</p1><br>
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="66ffcc">Identifier</font><font color="cc66ff"> "system-keyboard"</font><br>
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;MatchIsKeyboard "on"<br>
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</font><font color="66ffcc">Option</font><font color="cc66ff"> "XkbLayout" "br"</font><br>
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</font><font color="66ffcc">Option</font><font color="cc66ff"> "XkbVariant" ",abnt2"</font><br>
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</font><font color="66ffcc">Option</font><font color="cc66ff"> "XkbOptions" "grp:shift_toggle,grp_led:scroll"</font><br>
+                    <p1 style="color: yellow;">EndSection</p1>
+                </h3>
+            </td>
+        </tr>
+    </table>
+<!-- 05 -->
+ <h2 style="color:yellow;">05. Removendo Tearing da placa de video.</h2>
+    <table>
+        <tr>
+		    <td>
+                <h3 style="color: aqua;">Intel</h3>
+                    <h3>
+                    # nano /usr/share/X11/xorg.conf.d/20-intel.conf<br>
+                    <font color="ffff00">Section "Device"</font><br>
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="66ffcc">Identifier</font><font color="cc66ff"> "Intel Graphics"</font><br>
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Driver "intel"<br>
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="66ffcc">Option</font><font color="cc66ff"> "AccelMethod" "sna"</font><br>
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="66ffcc">Option</font><font color="cc66ff"> "TearFree" "on"</font><br>
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="66ffcc">Option</font><font color="cc66ff"> "DRI" "3"</font><br>
+                    <font color="ffff00">EndSection</font>
+                </h3>
+            </td>
+        </tr>
+    </table>
+<br>
+  <table>
+        <tr>
+		    <td>
+                <h3 style="color: red;">Radeon</h3>
+                    <h3># nano  /usr/share/X11/xorg.conf.d/50-device.conf<br>
+                        <font color="ffff00">Section "Device"</font><br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="66ffcc">Identifier</font><font color="cc66ff"> "Default"</font><br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Driver "amdgpu"<br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="66ffcc">Option</font><font color="cc66ff"> "DRI" "3"</font><br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="66ffcc">Option</font><font color="cc66ff"> "TearFree" "True"</font><br>
+                        <font color="ffff00">EndSection</font>
+                    </h3>
+                </h3>
+            </td>
+        </tr>
+    </table>
+
+
+  </body>
+
+</html>
+<h1>Subir placa wifi</h1>
+<h2> Retirado do site: https://www.vivaolinux.com.br/dica/Wi-Fi-no-liveCD-do-Arch-Linux/</h2>
+<table>
+    <tr>
+        <td>
+            <h3>
+                # ip link<br><br>
+
+<code>Um dos dispositivos começará com o "wl", por exemplo: "wlp3s0" ou similar. Este é o dispositivo de rede sem fio.
+
+Agora dê um "up" nele:</code><br><br>
+
+# ip link set [dispositivo] up<br><br>
+
+<code>Obs.: se der erro de rfkill, use o comando "rfkill unblock all" e tente novamente o comando acima.
+
+A seguir configure o wpa_supplicant:</code><br><br>
+
+# wpa_passphrase [NOME DA REDE] [SENHA] > /etc/wpa_supplicant/[NOME DA REDE].conf<br><br>
+
+<code>o nome da sua rede for "porcoporca" e sua senha for "macacachita", o comando ficaria assim:</code><br><br>
+
+# wpa_passphrase porcoporca macacachita > /etc/wpa_supplicant/porcoporca.conf<br><br>
+
+<code>Isso criará o arquivo "/etc/wpa_supplicant/porcoporca.conf". O nome do arquivo pode ser qualquer um. Por conveniência eu sugeri o mesmo nome da rede.
+
+Ative o dhcpcd:</code><br><br>
+
+# systemctl start dhcpcd<br><br>
+
+<code>E conecte com:</code><br><br>
+
+# wpa_supplicant -B -i [DISPOSITIVO] -c /etc/wpa_supplicant/[NOME DA REDE].conf<br><br>
+
+<code>Se o dispositivo for "wlp3s0" e a rede "porcoporca", o comando ficaria assim:</code><br><br>
+
+# wpa_supplicant -B -i wlp3s0 -c /etc/wpa_supplicant/porcoporca.conf<br><br>
+
+<code>uns 10 segundos e teste a conexão:</code><br><br>
+
+# ping -c4 www.vivaolinux.com.br
+            </h3>
+        </td>
+    </tr>
+</table>
+<br>
+
+<h2>Levantado e ativando rede com cabo</h2>
+<table>
+  <tr>
+    <td>
+      <h3>
+        # ip -s -c -h a<br>
+        # ip link set <p1 style="color: yellow;">enp3s0 </p1>  up<br>
+        # dhcpcd<br>
+        # systemctl enable dhcpcd
+      </h3>
+    </td>
+  </tr>
+</table>
+<br>
+<footer>
+    <h1>ARCH LINUX INSTALAÇÃO</h1>
+</footer>
