@@ -91,6 +91,29 @@ h3 {
     color: azure;
 }
 
+h4 {
+  font-family: monospace;
+  font-size: 20px;
+  border-right: 4px solid;
+  text-align: center;
+  width: 19ch;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typing 2s steps(19), blinking 0.5s infinite step-end alternate;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes blinking {
+  50% {
+    border-color: transparent;
+  }
+}
+
 code {
     color:gainsboro
 }
@@ -123,7 +146,8 @@ footer {
         <body>
  
 <header>
-    <h1>GUIA RAPIDO<br>instalar arch</h1>
+  <h1>GUIA RAPIDO</h1><br>
+  <h1>instalar arch</h1>
 </header>
 <footer>
     <h1>UEFI</h1>
@@ -134,7 +158,7 @@ footer {
     <table>
 
     	<tr>
-    		<td><h3 style="color: white;"># loadkeys br-abnt2</h3></td>
+    		<td><h4 style="color: white;"># loadkeys br-abnt2</h4></td>
     	</tr>
     </table>
 
@@ -161,31 +185,31 @@ footer {
                 <h3>
                     # gdisk /dev/sda<br>
                     <p1 class="yellowtext">Criar uma nova tabela de partição vazia </p1><br>			
-                    Command: o ↵<br>
+                    Command: <font color="#de325e"> o </font> ↵<br>
                     This option deletes all partitions and creates a new protective MBR.<br>
-                    Proceed? (Y/N): y ↵<br><br>
+                    Proceed? (Y/N): <font color="#de325e">y</font> ↵<br><br>
                     <p1 class="yellowtext">Criar Partição 1 (boot):</p1>
-                    Command: n ↵<br>
-                    Partition Number: 1 ↵<br>
+                    Command: <font color="#de325e">n</font> ↵<br>
+                    Partition Number: <font color="#de325e">1</font> ↵<br>
                     First sector: ↵<br>
-                    Last sector: +500M ↵<br>
-                    Hex Code: ef00 ↵ <font color="yellow">(para UEFI)</font><br><br>
+                    Last sector: <font color="#de325e">+500M</font> ↵<br>
+                    Hex Code: <font color="#de325e">ef00</font> ↵ <font color="yellow">(para UEFI)</font><br><br>
                     <p1 class="yellowtext">Criar Partição 2 (swap):</p1><br>
-                    Command: n ↵<br>
-                    Partition Number: 2 ↵<br>
+                    Command: <font color="#de325e">n</font> ↵<br>
+                    Partition Number: <font color="#de325e">2</font> ↵<br>
                     First sector: ↵<br>
-                    Last sector: +4G ↵<br>
-                    Hex Code: 8200 ↵<br><br>
+                    Last sector: <font color="#de325e">+4G</font> ↵<br>
+                    Hex Code: <font color="#de325e">8200</font> ↵<br><br>
                     <p1 class="yellowtext">Criar Partição 3 (root):</p1><br>
-                    Command: n ↵<br>
-                    Partition Number: 3 ↵<br>
+                    Command: <font color="#de325e">n</font> ↵<br>
+                    Partition Number: <font color="#de325e">3</font> ↵<br>
                     First sector: ↵<br>
                     Last sector: ↵ (for rest of disk)<br>
                     Hex Code: ↵<br><br>
                     <p1 class="yellowtext">Gravar a Tabela de Partição no Disco:</p1><br>
-                    Command: p ↵<br>
-                    Command: w ↵<br>
-                    Do you want to proceed? (Y/N): Y ↵<br><br>
+                    Command: <font color="#de325e">p</font> ↵<br>
+                    Command: <font color="#de325e">w</font> ↵<br>
+                    Do you want to proceed? (Y/N): <font color="#de325e">y</font> ↵<br><br>
                 </h3>
             </td>
     	</tr>
@@ -256,7 +280,7 @@ footer {
     	<tr>
     		<td>
                 <h3>
-                    # pacstrap -K /mnt base base-devel linux linux-firmware dhcpcd
+                    # pacstrap -K /mnt base base-devel linux linux-firmware
                 </h3>
             </td>
     	</tr>
@@ -304,13 +328,14 @@ footer {
     <table>
     	<tr>
     		<td>
-                <h3># nano /etc/locale.gen<br>
+          <h3># pacman -S vi<br>
+                    # vi /etc/locale.gen<br>
                     <p1 class="yellowtext">Descomente a linha pt_BR.UTF-8 UTF-8</p1><br>
                     # locale-gen<br>
                     # echo LANG=pt_BR.UTF-8 > /etc/locale.conf<br>
                     # export LANG=pt_BR.UTF-8
-                </h3>
-            </td>
+          </h3>
+        </td>
     	</tr>
     </table>
 <!-- 12 -->
@@ -326,7 +351,7 @@ footer {
     	</tr>
     </table>
 <!-- 13 -->
-    <h2>13. Instalando pacotes necessário para o funionamento do wifi.</h2>
+    <h2>13. Instalando pacotes necessário para o funionamento do wifi. Caso esteja em um notebook.</h2>
     <table>
     	<tr>
     		<td>
@@ -355,7 +380,7 @@ footer {
         <tr>
             <td>
                 <h3>
-                    # nano /etc/vconsole.conf<br>
+                    # vi /etc/vconsole.conf<br>
                     <font color="ffff00">KEYMAP=br-abnt2</font>
                 </h3>
             </td>
@@ -392,8 +417,9 @@ footer {
         <tr>
     		<td>
                 <h3>
-                    # useradd -m -G users,wheel,audio,video,dbus,network,\<br>
-                    rfkill,power,storage,lp -s /bin/bash <font color="ffcc00">nomeUsuario</font><br><br>
+                  <!-- # useradd -m -G users,wheel,audio,video,dbus,network,\<br>
+                    rfkill,power,storage,lp -s /bin/bash <font color="ffcc00">nomeUsuario</font><br><br>-->
+                    # useradd -m -G users,wheel,power,storage -s /bin/bash <font color="ffcc00">nomeUsuario</font><br><br>
                     # passwd <font color="ffcc00">nomeUsuario</font>
                 </h3>
             </td>
@@ -406,15 +432,15 @@ footer {
     	<tr>
 		    <td>
                 <h3>
-                    # pacman -S acpi acpid <p1 class="yellowtext">(para notebook bateria)</p1><br>
+                  <!--                    # pacman -S acpi acpid <p1 class="yellowtext">(para notebook bateria)</p1><br> 
                     networkmanager network-manager-applet-gtk2<br>
                     alsa-plugins alsa-utils pulseaudio-alsa<br>
 	                gst-plugins-{base,good,bad,ugly} gst-libav<br>
 	                xterm xfce4-terminal<br>
-                    firefox firefox-i18n-pt-br<br>
-                    git wget sudo<br>
-                    <p1 style="color: yellow;">OBS 1: Se não tem wifi use o comando dhcpcd + nome do dispisitivo (Ex: wlp3s0).</p1><br>
-                    <p1 style="color:aqua;">OBS 2: acpi e acpid são para a batéria do notebook.</p1>
+                  firefox firefox-i18n-pt-br<br> -->
+                  pacman -S git wget sudo <font color="#de325e">dhcpcd</font><br>
+                    <!-- <p1 style="color: yellow;">OBS 1: Se não tem wifi use o comando dhcpcd + nome do dispisitivo (Ex: wlp3s0).</p1><br>
+                    <p1 style="color:aqua;">OBS 2: acpi e acpid são para a batéria do notebook.</p1>-->
                 </h3>
             </td>
     	</tr>
@@ -426,7 +452,7 @@ footer {
     	<tr>
     		<td>
                 <h3>
-                # nano /etc/sudoers<br>
+                # vi /etc/sudoers<br>
                 <p1 class="yellowtext">abaixo da linha root ALL=(ALL) ALL adicione</p1><br>
                 nomeUsuario <code>ALL=(ALL) ALL</code>
                 </h3>
@@ -454,12 +480,13 @@ footer {
     <table>
     	<tr>
     		<td>
-                <h3>$ sudo systemctl start dhcpcd@<o style="color: aqua;">eth0</o>.service<br>
+          <h3>      $ ip -s -c -h a<br>
+                    $ sudo systemctl start dhcpcd@<o style="color: aqua;">eth0</o>.service<br>
                     $ sudo systemctl enable dhcpcd@<o style="color: aqua;">eth0</o>.service<br>
                     <!-- $ sudo systemctl start NetworkManager<br>
                     $ sudo systemctl enable NetworkManager<br> -->
                     <p1 style="color: yellow;">troque <o style="color: aqua;">eth0</o> pelo seu dispositivo.</p1>
-                </td>
+        </td>
     	</tr>
     </table>
 <!-- 02 -->
@@ -497,7 +524,7 @@ footer {
     <table>
         <tr>
             <td>
-                <h3># nano /etc/X11/xorg.conf.d/00-keyboard.conf<br><br>
+                <h3># vi /etc/X11/xorg.conf.d/00-keyboard.conf<br><br>
                     <p1 style="color: yellow;">Section "InputClass"</p1><br>
                     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="66ffcc">Identifier</font><font color="cc66ff"> "system-keyboard"</font><br>
                     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;MatchIsKeyboard "on"<br>
@@ -516,7 +543,7 @@ footer {
 		    <td>
                 <h3 style="color: aqua;">Intel</h3>
                     <h3>
-                    # nano /usr/share/X11/xorg.conf.d/20-intel.conf<br>
+                    # vi /usr/share/X11/xorg.conf.d/20-intel.conf<br>
                     <font color="ffff00">Section "Device"</font><br>
                     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="66ffcc">Identifier</font><font color="cc66ff"> "Intel Graphics"</font><br>
                     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Driver "intel"<br>
@@ -533,7 +560,7 @@ footer {
         <tr>
 		    <td>
                 <h3 style="color: red;">Radeon</h3>
-                    <h3># nano  /usr/share/X11/xorg.conf.d/50-device.conf<br>
+                    <h3># vi  /usr/share/X11/xorg.conf.d/50-device.conf<br>
                         <font color="ffff00">Section "Device"</font><br>
                         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font color="66ffcc">Identifier</font><font color="cc66ff"> "Default"</font><br>
                         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Driver "amdgpu"<br>
